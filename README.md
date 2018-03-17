@@ -17,4 +17,4 @@ An application to debug, log and capture serial bus.
 * Developer guide (Coming Soon)
 * Road map (Coming Soon)
 
-# [License](LICENSE.md)
+# [License](LICENSE)
