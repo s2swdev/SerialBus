@@ -1,6 +1,6 @@
 # Features and Screen shots
 
-![Main Window](Main_Window.PNG)
+![Main Window](Main_Window.png)
 
 ## User interface
 * Auto-detect available COM ports
