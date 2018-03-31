@@ -1,4 +1,7 @@
 # Features and Screen shots
+
+![Main Window](Main_Window.PNG)
+
 ## User interface
 * Auto-detect available COM ports
 * Display outgoing data in blue and incoming data in green
