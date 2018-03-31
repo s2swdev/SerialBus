@@ -15,7 +15,7 @@ namespace SerialBus
 {
     public partial class Form1 : Form
     {
-        public string data { get; set; }
+        public string data_rx { get; set; }
         bool send_data_flag = false;    /*!< Data transmitted */
         int send_repeat_counter = 0;    /*!< Tx repeatition counter */
         System.IO.StreamReader in_file;
@@ -168,6 +168,7 @@ namespace SerialBus
             //port_config_group.Enabled = !value;
             //datalogger_options_panel.Enabled = !value;
             write_options_group.Enabled = value;
+            display_as_group.Enabled = value;
 
             if (value)
             {
@@ -291,11 +292,47 @@ namespace SerialBus
                     //{
 
                     serialPort1.Write(tx_data.Replace("\\n", Environment.NewLine));
-                    tx_terminal.AppendText("[TX]> " + tx_data + "\n");
+
+                    // Changing outgoing data color to blue
+                    main_textBox_binary.SelectionColor = Color.Blue;
+                    main_textBox_decimal.SelectionColor = Color.Blue;
+                    main_textBox_hex.SelectionColor = Color.Blue;
+                    main_textBox_ascii.SelectionColor = Color.Blue;
+
+                    main_textBox_binary.AppendText("" + DateTime.Now + " [TX]> ");
+                    main_textBox_hex.AppendText("" + DateTime.Now + " [TX]> ");
+                    main_textBox_decimal.AppendText("" + DateTime.Now + " [TX]> ");
+                    main_textBox_ascii.AppendText("" + DateTime.Now + " [TX]> ");
+
+                    byte[] bytes = Encoding.ASCII.GetBytes(tx_data);
+                    foreach (byte b in bytes)
+                    {
+                        main_textBox_decimal.AppendText(Convert.ToInt32(Convert.ToString(b, 2), 2).ToString() + " ");
+                    }
+                    main_textBox_decimal.AppendText("\n");
+
+                    foreach (byte b in bytes)
+                    {
+                        main_textBox_binary.AppendText(Convert.ToString(b, 2).PadLeft(8, '0') + " ");
+                    }
+                    main_textBox_binary.AppendText("\n");
+
+                    char[] array = tx_data.ToCharArray();
+                    string final = "";
+                    foreach (var i in array)
+                    {
+                        string hex = String.Format("{0:x}", Convert.ToInt32(i));  // If inserting 0x is needed for hex data
+                        final += hex + " "; //.Insert(0, "0x") + " ";
+                    }
+                    final = final.TrimEnd();
+                    main_textBox_hex.AppendText(final + "\n");
+
+                    main_textBox_ascii.AppendText(tx_data + "\n");
+
                     //}
                     //catch
                     //{
-                    //alert("Can't write to " + serialPort1.PortName + " port it might be opennd in another program");
+                    //alert("Can't write to " + serialPort1.PortName + " port it might be opened in another program");
                     //}
                 }
             }
@@ -403,11 +440,11 @@ namespace SerialBus
                 serialPort1.Write(e.KeyChar.ToString());
 
 
-                tx_terminal.AppendText("[TX]> " + e.KeyChar.ToString() + "\n");
+                main_textBox_hex.AppendText("[TX]> " + e.KeyChar.ToString() + "\n");
                 tx_textarea.Clear();
 
                 //}
-                //catch { alert("Can't write to " + serialPort1.PortName + " port it might be opennd in another program"); }
+                //catch { alert("Can't write to " + serialPort1.PortName + " port it might be opened in another program"); }
             }
         }
 
@@ -478,7 +515,10 @@ namespace SerialBus
 
         private void ClearBtn_Click(object sender, EventArgs e)
         {
-            tx_terminal.Clear();
+            main_textBox_hex.Clear();
+            main_textBox_decimal.Clear();
+            main_textBox_binary.Clear();
+            main_textBox_ascii.Clear();
         }
 
 
@@ -498,18 +538,19 @@ namespace SerialBus
                 {
                     try
                     { out_file.Write(data.Replace("\\n", Environment.NewLine)); }
-                    catch { alert("Can't write to " + datalogger_checkbox.Text + " file it might be not exist or it is opennd in another program"); return; }
+                    catch { alert("Can't write to " + datalogger_checkbox.Text + " file it might be not exist or it is opened in another program"); 
+                    return; }
                 }*/
 
 
                 this.BeginInvoke((Action)(() =>
                 {
-                    data = System.Text.Encoding.Default.GetString(dataRecevied);
+                    data_rx = System.Text.Encoding.Default.GetString(dataRecevied);
 
                     //if (!plotter_flag && !backgroundWorker1.IsBusy)
                     //{
                     //if (display_hex_radiobutton.Checked)
-                    data = BitConverter.ToString(dataRecevied);
+                    data_rx = BitConverter.ToString(dataRecevied);
 
                     backgroundWorker1.RunWorkerAsync();
                     //}
@@ -531,7 +572,7 @@ namespace SerialBus
                     }*/
                 }));
                 //}
-                //catch { alert("Can't read form  " + serialPort1.PortName + " port it might be opennd in another program"); }
+                //catch { alert("Can't read form  " + serialPort1.PortName + " port it might be opened in another program"); }
             }
         }
 
@@ -539,28 +580,113 @@ namespace SerialBus
         /* Append text to rx_textarea*/
         private void update_rxtextarea_event(object sender, DoWorkEventArgs e)
         {
+            string[] groups = data_rx.Split('-');
+            int decValue;// = Convert.ToInt32("data_rx", 16);
             this.BeginInvoke((Action)(() =>
             {
-                if (tx_terminal.Lines.Count() > 5000)
-                    tx_terminal.ResetText();
+                if (main_textBox_hex.Lines.Count() > 5000)
+                    main_textBox_hex.ResetText();
+
+                // Changing incoming data color to green
+                main_textBox_binary.SelectionColor = Color.Green;
+                main_textBox_decimal.SelectionColor = Color.Green;
+                main_textBox_hex.SelectionColor = Color.Green;
+                main_textBox_ascii.SelectionColor = Color.Green;
+
                 //showing current Date and Time 
-                tx_terminal.AppendText("  " + DateTime.Now);
+                main_textBox_binary.AppendText("" + DateTime.Now + " [RX]> ");
+                main_textBox_hex.AppendText("" + DateTime.Now + " [RX]> ");
+                main_textBox_decimal.AppendText("" + DateTime.Now + " [RX]> ");
+                main_textBox_ascii.AppendText("" + DateTime.Now + " [RX]> ");
+                for (int x = 0; x < groups.Length; x++)
+                {
+                    decValue = Convert.ToInt32(groups[x], 16);
+                    byte[] bytes = Encoding.ASCII.GetBytes(ConvertHex(groups[x]));
+                    foreach (byte b in bytes)
+                    {
+                        main_textBox_binary.AppendText(Convert.ToString(b, 2).PadLeft(8, '0') + " ");
+                    }
+                    
 
-                // Changing Incoming Data colour Green
+                    main_textBox_decimal.AppendText(decValue + "");
+                    
 
-                tx_terminal.SelectionFont = Font;
-                tx_terminal.SelectionColor = Color.Green;
+                    char[] array = groups[x].ToCharArray();
+                    string final = "";
+                    foreach (var i in array)
+                    //for (int i = 0; i < data_rx.Length; i += 2)
+                    {
+                        string hex = String.Format("{0:X}", Convert.ToInt32(i));  // If inserting 0x is needed for hex data
+                        final += hex.Insert(0, "0x") + " ";
+                    }
+                    final = final.TrimEnd();
+                    main_textBox_hex.AppendText(groups[x]);
+                    
 
-
-                tx_terminal.AppendText("  [RX]> " + data + "  Hex Format");
-                tx_terminal.AppendText("\n");
-
+                    main_textBox_ascii.AppendText(ConvertHex(groups[x]));
+                    
+                }
+                main_textBox_binary.AppendText("\n");
+                main_textBox_decimal.AppendText("\n");
+                main_textBox_hex.AppendText("\n");
+                main_textBox_ascii.AppendText("\n");
             }));
         }
 
-        private void tx_textarea_TextChanged(object sender, EventArgs e)
+        public static string ConvertHex(String hexString)
         {
+            try
+            {
+                string ascii = string.Empty;
 
+                for (int i = 0; i < hexString.Length; i += 2)
+                {
+                    String hs = string.Empty;
+
+                    hs = hexString.Substring(i, 2);
+                    uint decval = System.Convert.ToUInt32(hs, 16);
+                    char character = System.Convert.ToChar(decval);
+                    ascii += character;
+
+                }
+
+                return ascii;
+            }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+
+            return string.Empty;
+        }
+        
+        private void DisplayBinaryRadiobutton_CheckedChanged(object sender, EventArgs e)
+        {
+            main_textBox_hex.Visible = false;
+            main_textBox_binary.Visible = true;
+            main_textBox_decimal.Visible = false;
+            main_textBox_ascii.Visible = false;
+        }
+
+        private void DisplayDecimalRadiobutton_CheckedChanged(object sender, EventArgs e)
+        {
+            main_textBox_hex.Visible = false;
+            main_textBox_binary.Visible = false;
+            main_textBox_decimal.Visible = true;
+            main_textBox_ascii.Visible = false;
+        }
+
+        private void DisplayHexRadiobutton_CheckedChanged(object sender, EventArgs e)
+        {
+            main_textBox_hex.Visible = true;
+            main_textBox_binary.Visible = false;
+            main_textBox_decimal.Visible = false;
+            main_textBox_ascii.Visible = false;
+        }
+
+        private void DisplayAsciiRadiobutton_CheckedChanged(object sender, EventArgs e)
+        {
+            main_textBox_hex.Visible = false;
+            main_textBox_binary.Visible = false;
+            main_textBox_decimal.Visible = false;
+            main_textBox_ascii.Visible = true;
         }
     }
 }

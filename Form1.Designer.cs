@@ -31,8 +31,8 @@
             this.components = new System.ComponentModel.Container();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.port_config_group = new System.Windows.Forms.GroupBox();
@@ -69,7 +69,16 @@
             this.send_word_radiobutton = new System.Windows.Forms.RadioButton();
             this.send_status = new System.Windows.Forms.Label();
             this.sendData = new System.Windows.Forms.Button();
-            this.tx_terminal = new System.Windows.Forms.RichTextBox();
+            this.main_textBox_hex = new System.Windows.Forms.RichTextBox();
+            this.display_as_group = new System.Windows.Forms.GroupBox();
+            this.DisplayAsciiRadiobutton = new System.Windows.Forms.RadioButton();
+            this.DisplayHexRadiobutton = new System.Windows.Forms.RadioButton();
+            this.DisplayDecimalRadiobutton = new System.Windows.Forms.RadioButton();
+            this.label11 = new System.Windows.Forms.Label();
+            this.DisplayBinaryRadiobutton = new System.Windows.Forms.RadioButton();
+            this.main_textBox_binary = new System.Windows.Forms.RichTextBox();
+            this.main_textBox_decimal = new System.Windows.Forms.RichTextBox();
+            this.main_textBox_ascii = new System.Windows.Forms.RichTextBox();
             this.menuStrip1.SuspendLayout();
             this.port_config_group.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -78,6 +87,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.send_delay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.send_repeat)).BeginInit();
             this.tx_radiobuttons_panel.SuspendLayout();
+            this.display_as_group.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -87,7 +97,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(749, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(826, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -99,6 +109,13 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -107,17 +124,10 @@
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
             // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
-            // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -290,7 +300,7 @@
             this.toolStripStatusLabel1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 436);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(749, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(826, 22);
             this.statusStrip1.TabIndex = 23;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -323,7 +333,6 @@
             this.tx_textarea.Name = "tx_textarea";
             this.tx_textarea.Size = new System.Drawing.Size(368, 24);
             this.tx_textarea.TabIndex = 14;
-            this.tx_textarea.TextChanged += new System.EventHandler(this.tx_textarea_TextChanged);
             this.tx_textarea.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tx_textarea_KeyPress);
             // 
             // write_options_group
@@ -480,25 +489,140 @@
             this.sendData.UseVisualStyleBackColor = true;
             this.sendData.Click += new System.EventHandler(this.sendData_Click);
             // 
-            // tx_terminal
+            // main_textBox_hex
             // 
-            this.tx_terminal.BackColor = System.Drawing.Color.White;
-            this.tx_terminal.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tx_terminal.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tx_terminal.HideSelection = false;
-            this.tx_terminal.Location = new System.Drawing.Point(14, 166);
-            this.tx_terminal.Name = "tx_terminal";
-            this.tx_terminal.ReadOnly = true;
-            this.tx_terminal.Size = new System.Drawing.Size(722, 268);
-            this.tx_terminal.TabIndex = 35;
-            this.tx_terminal.Text = "";
+            this.main_textBox_hex.BackColor = System.Drawing.Color.White;
+            this.main_textBox_hex.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.main_textBox_hex.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.main_textBox_hex.HideSelection = false;
+            this.main_textBox_hex.Location = new System.Drawing.Point(15, 165);
+            this.main_textBox_hex.Name = "main_textBox_hex";
+            this.main_textBox_hex.ReadOnly = true;
+            this.main_textBox_hex.Size = new System.Drawing.Size(799, 268);
+            this.main_textBox_hex.TabIndex = 35;
+            this.main_textBox_hex.Text = "";
+            this.main_textBox_hex.Visible = false;
+            // 
+            // display_as_group
+            // 
+            this.display_as_group.Controls.Add(this.DisplayAsciiRadiobutton);
+            this.display_as_group.Controls.Add(this.DisplayHexRadiobutton);
+            this.display_as_group.Controls.Add(this.DisplayDecimalRadiobutton);
+            this.display_as_group.Controls.Add(this.label11);
+            this.display_as_group.Controls.Add(this.DisplayBinaryRadiobutton);
+            this.display_as_group.Enabled = false;
+            this.display_as_group.Location = new System.Drawing.Point(742, 27);
+            this.display_as_group.Name = "display_as_group";
+            this.display_as_group.Size = new System.Drawing.Size(71, 133);
+            this.display_as_group.TabIndex = 35;
+            this.display_as_group.TabStop = false;
+            this.display_as_group.Text = "Display As";
+            // 
+            // DisplayAsciiRadiobutton
+            // 
+            this.DisplayAsciiRadiobutton.AutoSize = true;
+            this.DisplayAsciiRadiobutton.Location = new System.Drawing.Point(6, 87);
+            this.DisplayAsciiRadiobutton.Name = "DisplayAsciiRadiobutton";
+            this.DisplayAsciiRadiobutton.Size = new System.Drawing.Size(52, 17);
+            this.DisplayAsciiRadiobutton.TabIndex = 26;
+            this.DisplayAsciiRadiobutton.Text = "ASCII";
+            this.DisplayAsciiRadiobutton.UseVisualStyleBackColor = true;
+            this.DisplayAsciiRadiobutton.CheckedChanged += new System.EventHandler(this.DisplayAsciiRadiobutton_CheckedChanged);
+            // 
+            // DisplayHexRadiobutton
+            // 
+            this.DisplayHexRadiobutton.AutoSize = true;
+            this.DisplayHexRadiobutton.Location = new System.Drawing.Point(6, 64);
+            this.DisplayHexRadiobutton.Name = "DisplayHexRadiobutton";
+            this.DisplayHexRadiobutton.Size = new System.Drawing.Size(44, 17);
+            this.DisplayHexRadiobutton.TabIndex = 20;
+            this.DisplayHexRadiobutton.Text = "Hex";
+            this.DisplayHexRadiobutton.UseVisualStyleBackColor = true;
+            this.DisplayHexRadiobutton.CheckedChanged += new System.EventHandler(this.DisplayHexRadiobutton_CheckedChanged);
+            // 
+            // DisplayDecimalRadiobutton
+            // 
+            this.DisplayDecimalRadiobutton.AutoSize = true;
+            this.DisplayDecimalRadiobutton.Location = new System.Drawing.Point(6, 41);
+            this.DisplayDecimalRadiobutton.Name = "DisplayDecimalRadiobutton";
+            this.DisplayDecimalRadiobutton.Size = new System.Drawing.Size(63, 17);
+            this.DisplayDecimalRadiobutton.TabIndex = 19;
+            this.DisplayDecimalRadiobutton.Text = "Decimal";
+            this.DisplayDecimalRadiobutton.UseVisualStyleBackColor = true;
+            this.DisplayDecimalRadiobutton.CheckedChanged += new System.EventHandler(this.DisplayDecimalRadiobutton_CheckedChanged);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(271, 76);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(0, 13);
+            this.label11.TabIndex = 25;
+            // 
+            // DisplayBinaryRadiobutton
+            // 
+            this.DisplayBinaryRadiobutton.AutoSize = true;
+            this.DisplayBinaryRadiobutton.Checked = true;
+            this.DisplayBinaryRadiobutton.Location = new System.Drawing.Point(6, 18);
+            this.DisplayBinaryRadiobutton.Name = "DisplayBinaryRadiobutton";
+            this.DisplayBinaryRadiobutton.Size = new System.Drawing.Size(54, 17);
+            this.DisplayBinaryRadiobutton.TabIndex = 18;
+            this.DisplayBinaryRadiobutton.TabStop = true;
+            this.DisplayBinaryRadiobutton.Text = "Binary";
+            this.DisplayBinaryRadiobutton.UseVisualStyleBackColor = true;
+            this.DisplayBinaryRadiobutton.CheckedChanged += new System.EventHandler(this.DisplayBinaryRadiobutton_CheckedChanged);
+            // 
+            // main_textBox_binary
+            // 
+            this.main_textBox_binary.BackColor = System.Drawing.Color.White;
+            this.main_textBox_binary.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.main_textBox_binary.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.main_textBox_binary.HideSelection = false;
+            this.main_textBox_binary.Location = new System.Drawing.Point(15, 165);
+            this.main_textBox_binary.Name = "main_textBox_binary";
+            this.main_textBox_binary.ReadOnly = true;
+            this.main_textBox_binary.Size = new System.Drawing.Size(799, 268);
+            this.main_textBox_binary.TabIndex = 36;
+            this.main_textBox_binary.Text = "";
+            // 
+            // main_textBox_decimal
+            // 
+            this.main_textBox_decimal.BackColor = System.Drawing.Color.White;
+            this.main_textBox_decimal.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.main_textBox_decimal.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.main_textBox_decimal.HideSelection = false;
+            this.main_textBox_decimal.Location = new System.Drawing.Point(15, 165);
+            this.main_textBox_decimal.Name = "main_textBox_decimal";
+            this.main_textBox_decimal.ReadOnly = true;
+            this.main_textBox_decimal.Size = new System.Drawing.Size(799, 268);
+            this.main_textBox_decimal.TabIndex = 37;
+            this.main_textBox_decimal.Text = "";
+            this.main_textBox_decimal.Visible = false;
+            // 
+            // main_textBox_ascii
+            // 
+            this.main_textBox_ascii.BackColor = System.Drawing.Color.White;
+            this.main_textBox_ascii.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.main_textBox_ascii.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.main_textBox_ascii.HideSelection = false;
+            this.main_textBox_ascii.Location = new System.Drawing.Point(15, 165);
+            this.main_textBox_ascii.Name = "main_textBox_ascii";
+            this.main_textBox_ascii.ReadOnly = true;
+            this.main_textBox_ascii.Size = new System.Drawing.Size(799, 268);
+            this.main_textBox_ascii.TabIndex = 38;
+            this.main_textBox_ascii.Text = "";
+            this.main_textBox_ascii.Visible = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(749, 458);
-            this.Controls.Add(this.tx_terminal);
+            this.ClientSize = new System.Drawing.Size(826, 458);
+            this.Controls.Add(this.main_textBox_ascii);
+            this.Controls.Add(this.main_textBox_decimal);
+            this.Controls.Add(this.main_textBox_binary);
+            this.Controls.Add(this.display_as_group);
+            this.Controls.Add(this.main_textBox_hex);
             this.Controls.Add(this.write_options_group);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.port_config_group);
@@ -520,6 +644,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.send_repeat)).EndInit();
             this.tx_radiobuttons_panel.ResumeLayout(false);
             this.tx_radiobuttons_panel.PerformLayout();
+            this.display_as_group.ResumeLayout(false);
+            this.display_as_group.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -567,7 +693,16 @@
         private System.Windows.Forms.RadioButton send_word_radiobutton;
         private System.Windows.Forms.Label send_status;
         private System.Windows.Forms.Button sendData;
-        private System.Windows.Forms.RichTextBox tx_terminal;
+        private System.Windows.Forms.RichTextBox main_textBox_hex;
+        private System.Windows.Forms.GroupBox display_as_group;
+        private System.Windows.Forms.RadioButton DisplayAsciiRadiobutton;
+        private System.Windows.Forms.RadioButton DisplayHexRadiobutton;
+        private System.Windows.Forms.RadioButton DisplayDecimalRadiobutton;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.RadioButton DisplayBinaryRadiobutton;
+        private System.Windows.Forms.RichTextBox main_textBox_binary;
+        private System.Windows.Forms.RichTextBox main_textBox_decimal;
+        private System.Windows.Forms.RichTextBox main_textBox_ascii;
     }
 }
 
