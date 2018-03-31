@@ -13,7 +13,7 @@ An application to debug, log and capture serial bus.
 * **Features list (Coming Soon)**
 * Installation
 	* System requirements (Coming Soon)
-* Features and Screen shots (Coming Soon)
+* [Features and Screen shots](/Docs/Features-and-Screen-shots.md)
 * Developer guide (Coming Soon)
 * Road map (Coming Soon)
 
