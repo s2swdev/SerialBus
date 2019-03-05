@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.com/s2swdev/atom-my-prayer-times.svg?branch=master)](https://travis-ci.com/s2swdev/atom-my-prayer-times)
-
+[![Build Status](https://travis-ci.com/s2swdev/SerialBus.svg?branch=master)](https://travis-ci.com/s2swdev/SerialBus)
+SerialBus
 # SerialBus
 An application to debug, log and capture serial bus. 
 
