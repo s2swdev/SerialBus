@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
 using System.IO.Ports;
 using System.Timers;
 using System.IO;
@@ -22,9 +23,20 @@ namespace SerialBus
 
         public Form1()
         {
+            Thread t = new Thread(new ThreadStart(SplashScreen));
+            t.Start();
+            Thread.Sleep(5000);
+            t.Abort();
             InitializeComponent();
             PortConfiguration();
         }
+
+        public void SplashScreen()
+        {
+            Application.Run(new SplashScreen());
+        }
+
+
 
         /**
          * @param 
@@ -421,7 +433,6 @@ namespace SerialBus
             }
         }
 
-
         /**
          * 
          * @param
@@ -453,7 +464,7 @@ namespace SerialBus
          * @param
          *  sender, e
          * @brief 
-         *  This function...
+         *  This function is executed when 
          * @author  
          *  S.Aman
          */
@@ -510,9 +521,15 @@ namespace SerialBus
             this.Close();
         }
 
-        /*Clear funtion*/
-        //Implementing CLEAR function which clears corresponding console window of display
-
+        /**
+         * 
+         * @param
+         *  sender, e
+         * @brief 
+         *  This function implements CLEAR function which clears corresponding console window of display
+         * @author  
+         *  S.Aman
+         */
         private void ClearBtn_Click(object sender, EventArgs e)
         {
             main_textBox_hex.Clear();
@@ -521,8 +538,15 @@ namespace SerialBus
             main_textBox_ascii.Clear();
         }
 
-
-        /* read data from serial */
+        /**
+         * 
+         * @param
+         *  sender, e
+         * @brief 
+         *  This function reads data from serial port
+         * @author  
+         *  S.Aman
+         */
         private void rx_data_event(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
             if (serialPort1.IsOpen)
@@ -576,8 +600,15 @@ namespace SerialBus
             }
         }
 
-        //Function to show the Monitor Data in text area
-        /* Append text to rx_textarea*/
+        /**
+         * 
+         * @param
+         *  sender, e
+         * @brief 
+         *  This function appends data received via serial port in the corresponding text area
+         * @author  
+         *  S.Aman
+         */
         private void update_rxtextarea_event(object sender, DoWorkEventArgs e)
         {
             string[] groups = data_rx.Split('-');
@@ -606,11 +637,9 @@ namespace SerialBus
                     {
                         main_textBox_binary.AppendText(Convert.ToString(b, 2).PadLeft(8, '0') + " ");
                     }
-                    
 
                     main_textBox_decimal.AppendText(decValue + "");
                     
-
                     char[] array = groups[x].ToCharArray();
                     string final = "";
                     foreach (var i in array)
@@ -622,9 +651,7 @@ namespace SerialBus
                     final = final.TrimEnd();
                     main_textBox_hex.AppendText(groups[x]);
                     
-
                     main_textBox_ascii.AppendText(ConvertHex(groups[x]));
-                    
                 }
                 main_textBox_binary.AppendText("\n");
                 main_textBox_decimal.AppendText("\n");
@@ -633,6 +660,15 @@ namespace SerialBus
             }));
         }
 
+        /**
+         * 
+         * @param
+         *  hexString
+         * @brief 
+         *  This function converts hex string into ascii character
+         * @author  
+         *  S.Aman
+         */
         public static string ConvertHex(String hexString)
         {
             try
@@ -647,7 +683,6 @@ namespace SerialBus
                     uint decval = System.Convert.ToUInt32(hs, 16);
                     char character = System.Convert.ToChar(decval);
                     ascii += character;
-
                 }
 
                 return ascii;
@@ -656,7 +691,16 @@ namespace SerialBus
 
             return string.Empty;
         }
-        
+
+        /**
+         * 
+         * @param
+         *  sender, e
+         * @brief 
+         *  This function is executed when binary button selection is changed in Display As group
+         * @author  
+         *  S.Aman
+         */
         private void DisplayBinaryRadiobutton_CheckedChanged(object sender, EventArgs e)
         {
             main_textBox_hex.Visible = false;
@@ -665,6 +709,15 @@ namespace SerialBus
             main_textBox_ascii.Visible = false;
         }
 
+        /**
+         * 
+         * @param
+         *  sender, e
+         * @brief 
+         *  This function is executed when decimal button selection is changed in Display As group
+         * @author  
+         *  S.Aman
+         */
         private void DisplayDecimalRadiobutton_CheckedChanged(object sender, EventArgs e)
         {
             main_textBox_hex.Visible = false;
@@ -673,6 +726,15 @@ namespace SerialBus
             main_textBox_ascii.Visible = false;
         }
 
+        /**
+         * 
+         * @param
+         *  sender, e
+         * @brief 
+         *  This function is executed when hex button selection is changed in Display As group
+         * @author  
+         *  S.Aman
+         */
         private void DisplayHexRadiobutton_CheckedChanged(object sender, EventArgs e)
         {
             main_textBox_hex.Visible = true;
@@ -681,6 +743,15 @@ namespace SerialBus
             main_textBox_ascii.Visible = false;
         }
 
+        /**
+         * 
+         * @param
+         *  sender, e
+         * @brief 
+         *  This function is executed when ascii button selection is changed in Display As group
+         * @author  
+         *  S.Aman
+         */
         private void DisplayAsciiRadiobutton_CheckedChanged(object sender, EventArgs e)
         {
             main_textBox_hex.Visible = false;
